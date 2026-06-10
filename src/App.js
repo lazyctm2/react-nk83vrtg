@@ -340,9 +340,24 @@ export default function App() {
         posicion: `POINT(${lng} ${lat})`,
       },
     ]);
+
+    if (error) {
+      setEnviando(false);
+      return alert('Error: ' + error.message);
+    }
+
+    const { error: historyError } = await supabase.from('historial_avisos').insert([
+      {
+        tipo_siniestro: seleccion.subtipo,
+        ubicacion: desc,
+      },
+    ]);
+
     setEnviando(false);
 
-    if (error) return alert('Error: ' + error.message);
+    if (historyError) {
+      console.error('Error guardando historial de avisos:', historyError);
+    }
 
     setExito(true);
     setTimeout(() => {
