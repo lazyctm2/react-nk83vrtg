@@ -66,6 +66,9 @@ const parseCoords = (pos) => {
   return match ? [parseFloat(match[2]), parseFloat(match[1])] : null;
 };
 
+const EXPIRATION_MS = 60 * 60 * 1000;
+const isIncidentFresh = (createdAt) => Date.now() - createdAt.getTime() < EXPIRATION_MS;
+
 const crearIconoEmoji = (emoji, color) =>
   L.divIcon({
     html: `<div style="
@@ -140,6 +143,17 @@ export default function App() {
     initRealtime();
     initPresence();
 
+    const cleanupInterval = setInterval(() => {
+      const now = Date.now();
+      markersRef.current = markersRef.current.filter((item) => {
+        if (now - item.createdAt.getTime() >= EXPIRATION_MS) {
+          item.marker.remove();
+          return false;
+        }
+        return true;
+      });
+    }, 60 * 1000);
+
     if (navigator.geolocation) {
       setGpsStatus('searching');
 
@@ -200,7 +214,8 @@ export default function App() {
       if (presenceChannelRef.current)
         supabase.removeChannel(presenceChannelRef.current);
 
-      markersRef.current.forEach((m) => m.remove());
+      clearInterval(cleanupInterval);
+      markersRef.current.forEach((item) => item.marker.remove());
 
       map.off();
       map.remove();
@@ -220,7 +235,11 @@ export default function App() {
   }, [darkMode]);
 
   const loadIncidents = async () => {
-    const { data, error } = await await supabase.from('siniestros').select('*');
+    const cutoff = new Date(Date.now() - EXPIRATION_MS).toISOString();
+    const { data, error } = await supabase
+      .from('siniestros')
+      .select('*')
+      .gte('created_at', cutoff);
     if (error) return console.error(error);
     data?.forEach(addIncidentMarker);
   };
@@ -263,6 +282,9 @@ export default function App() {
     const coords = parseCoords(s.posicion);
     if (!coords) return;
 
+    const createdAt = s.created_at ? new Date(s.created_at) : new Date();
+    if (!isIncidentFresh(createdAt)) return;
+
     const { emoji, color } = EMOJI_MAP.get(s.subtipo) || {
       emoji: '⚠️',
       color: '#6b7280',
@@ -276,7 +298,7 @@ export default function App() {
           s.descripcion || 'Sin detalles'
         }</span>
       </div>`);
-    markersRef.current.push(marker);
+    markersRef.current.push({ marker, createdAt });
   };
 
   const handleSelectOption = (opt) => {
