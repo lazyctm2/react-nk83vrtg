@@ -3,6 +3,7 @@ import L from 'leaflet';
 import { supabase } from './supabaseClient';
 import 'leaflet/dist/leaflet.css';
 import './style.css';
+import logo from './logo.svg';
 
 const OPCIONES = [
   {
@@ -342,8 +343,8 @@ export default function App() {
       <header style={headerStyle}>
         <div style={headerLeftStyle}>
           <div style={brandStyle}>
-            <span style={logoStyle}>🚨</span>
-            <span style={titleStyle}>Alerta Ciudadana</span>
+            <img src={logo} alt="SITUA" style={logoStyle} />
+            <span style={titleStyle}>SITUA</span>
           </div>
           <span style={headerSubtitleStyle}>Mapa de incidentes en tiempo real</span>
         </div>
@@ -578,7 +579,8 @@ const centerBtnStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  zIndex: 50,
+  zIndex: 1200,
+  pointerEvents: 'auto',
 };
 const fabStyle = {
   position: 'fixed',
@@ -594,7 +596,8 @@ const fabStyle = {
   gap: 10,
   padding: '0 20px',
   cursor: 'pointer',
-  zIndex: 50,
+  zIndex: 1200,
+  pointerEvents: 'auto',
 };
 const fabIconStyle = { fontSize: 24, color: '#fff', fontWeight: 700 };
 const fabTextStyle = { fontSize: 15, fontWeight: 700, color: '#fff' };
