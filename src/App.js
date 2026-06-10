@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { supabase } from './supabaseClient';
 import 'leaflet/dist/leaflet.css';
+import './style.css';
 
 const OPCIONES = [
   {
@@ -337,11 +338,14 @@ export default function App() {
   };
 
   return (
-    <div style={containerStyle}>
+    <div className="app-root" style={containerStyle}>
       <header style={headerStyle}>
         <div style={headerLeftStyle}>
-          <span style={logoStyle}>🚨</span>
-          <span style={titleStyle}>Alerta Ciudadana</span>
+          <div style={brandStyle}>
+            <span style={logoStyle}>🚨</span>
+            <span style={titleStyle}>Alerta Ciudadana</span>
+          </div>
+          <span style={headerSubtitleStyle}>Mapa de incidentes en tiempo real</span>
         </div>
         <div style={statusStyle}>
           <span style={{ ...gpsDotStyle, background: gpsColors[gpsStatus] }} />
@@ -380,13 +384,14 @@ export default function App() {
 
       {modalOpen && (
         <div
+          className="modal-backdrop"
           style={overlayStyle}
           onClick={() => {
             setModalOpen(false);
             setSeleccion(null);
           }}
         >
-          <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+          <div className="modal-sheet" style={modalStyle} onClick={(e) => e.stopPropagation()}>
             <button
               style={closeBtnStyle}
               onClick={() => {
@@ -414,7 +419,8 @@ export default function App() {
                   <button
                     key={opt.id}
                     onClick={() => handleSelectOption(opt)}
-                    style={{ ...cardStyle, borderColor: opt.color }}
+                    className="incident-card"
+                    style={{ borderColor: opt.color }}
                   >
                     <span
                       style={{
@@ -434,7 +440,7 @@ export default function App() {
             ) : (
               <div style={actionContainerStyle}>
                 <button
-                  style={{ ...actionBtnStyle, background: '#3b82f6' }}
+                  className="primary-button"
                   onClick={handleUseLocation}
                   disabled={enviando}
                 >
@@ -447,22 +453,19 @@ export default function App() {
                   placeholder="Ej: Av. Alemania 123, Temuco"
                   value={direccion}
                   onChange={(e) => setDireccion(e.target.value)}
-                  style={inputStyle}
+                  className="input-field"
                   onKeyDown={(e) => e.key === 'Enter' && handleUseAddress()}
                 />
                 <button
-                  style={{
-                    ...actionBtnStyle,
-                    background: '#22c55e',
-                    opacity: direccion.trim() ? 1 : 0.5,
-                  }}
+                  className="primary-button"
+                  style={{ opacity: direccion.trim() ? 1 : 0.6 }}
                   onClick={handleUseAddress}
                   disabled={enviando || !direccion.trim()}
                 >
                   <span style={actionIconStyle}>📌</span> Enviar
                 </button>
                 <button
-                  style={backBtnStyle}
+                  className="secondary-button"
                   onClick={() => setSeleccion(null)}
                   disabled={enviando}
                 >
@@ -514,47 +517,63 @@ const containerStyle = {
   background: '#f5f5f5',
 };
 const headerStyle = {
-  background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)',
-  color: '#fff',
-  padding: '12px 20px',
+  background: '#ffffff',
+  color: '#111827',
+  padding: '18px 26px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+  gap: 16,
+  borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
+  position: 'relative',
   zIndex: 100,
 };
-const headerLeftStyle = { display: 'flex', alignItems: 'center', gap: 10 };
-const logoStyle = { fontSize: 24 };
-const titleStyle = { fontSize: 18, fontWeight: 600, letterSpacing: '0.3px' };
+const headerLeftStyle = { display: 'flex', flexDirection: 'column', gap: 6 };
+const brandStyle = { display: 'flex', alignItems: 'center', gap: 12 };
+const logoStyle = {
+  fontSize: 28,
+  width: 40,
+  height: 40,
+  display: 'grid',
+  placeItems: 'center',
+  borderRadius: 14,
+  background: 'rgba(37, 99, 235, 0.1)',
+};
+const titleStyle = { fontSize: 20, fontWeight: 700, letterSpacing: '0.2px' };
+const headerSubtitleStyle = { fontSize: 13, color: '#475569' };
 const statusStyle = {
   display: 'flex',
   alignItems: 'center',
-  gap: 8,
-  background: 'rgba(255,255,255,0.1)',
-  padding: '6px  14px',
-  borderRadius: 20,
+  gap: 10,
+  padding: '10px 16px',
+  borderRadius: 999,
+  background: '#f8fafc',
+  border: '1px solid #e2e8f0',
   fontSize: 13,
 };
-const gpsDotStyle = { width: 8, height: 8, borderRadius: '50%' };
-const gpsTextStyle = { opacity: 0.9 };
+const gpsDotStyle = { width: 10, height: 10, borderRadius: '50%' };
+const gpsTextStyle = { color: '#0f172a', fontWeight: 600 };
 const dividerStyle = {
   width: 1,
-  height: 16,
-  background: 'rgba(255,255,255,0.3)',
-  margin: '0 4px',
+  height: 20,
+  background: '#cbd5e1',
 };
-const usersStyle = { opacity: 0.9 };
-const mapStyle = { flex: 1, width: '100%' };
+const usersStyle = { color: '#475569' };
+const mapStyle = {
+  flex: 1,
+  width: '100%',
+  minHeight: 'calc(100vh - 82px)',
+};
 const centerBtnStyle = {
   position: 'fixed',
   right: 20,
-  bottom: 100,
+  bottom: 110,
   width: 52,
   height: 52,
   borderRadius: 16,
-  background: '#fff',
-  border: 'none',
-  boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+  background: '#ffffff',
+  border: '1px solid rgba(148, 163, 184, 0.24)',
+  boxShadow: '0 18px 40px rgba(15,0,52,0.08)',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
@@ -565,24 +584,24 @@ const fabStyle = {
   position: 'fixed',
   right: 20,
   bottom: 30,
-  height: 52,
-  borderRadius: 26,
-  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+  height: 54,
+  borderRadius: 999,
+  background: '#2563eb',
   border: 'none',
-  boxShadow: '0 4px 20px rgba(239,68,68,0.4)',
+  boxShadow: '0 18px 40px rgba(37, 99, 235, 0.18)',
   display: 'flex',
   alignItems: 'center',
-  gap: 8,
-  padding: '0 20px 0 16px',
+  gap: 10,
+  padding: '0 20px',
   cursor: 'pointer',
   zIndex: 50,
 };
-const fabIconStyle = { fontSize: 28, color: '#fff', fontWeight: 300 };
-const fabTextStyle = { fontSize: 16, fontWeight: 600, color: '#fff' };
+const fabIconStyle = { fontSize: 24, color: '#fff', fontWeight: 700 };
+const fabTextStyle = { fontSize: 15, fontWeight: 700, color: '#fff' };
 const overlayStyle = {
   position: 'fixed',
   inset: 0,
-  background: 'rgba(0,0,0,0.5)',
+  background: 'rgba(15,23,42,0.32)',
   display: 'flex',
   alignItems: 'flex-end',
   justifyContent: 'center',
