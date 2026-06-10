@@ -5,6 +5,10 @@ import 'leaflet/dist/leaflet.css';
 import './style.css';
 import logo from './logo.svg';
 
+const LIGHT_TILE_LAYER = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+const DARK_TILE_LAYER = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const ATTRIBUTION = '&copy; OpenStreetMap &copy; CARTO';
+
 const OPCIONES = [
   {
     id: 1,
@@ -114,6 +118,8 @@ export default function App() {
   const [onlineUsers, setOnlineUsers] = useState(1);
   const [enviando, setEnviando] = useState(false);
   const [exito, setExito] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const tileLayerRef = useRef(null);
 
   useEffect(() => {
     const container = L.DomUtil.get('map');
@@ -122,12 +128,9 @@ export default function App() {
     const map = L.map(container).setView([-33.456, -70.648], 14);
     mapRef.current = map;
 
-    L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-      {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-      }
-    ).addTo(map);
+    tileLayerRef.current = L.tileLayer(LIGHT_TILE_LAYER, {
+      attribution: ATTRIBUTION,
+    }).addTo(map);
 
     map.on('dragstart', () => {
       followingRef.current = false;
@@ -204,6 +207,17 @@ export default function App() {
       mapRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    if (tileLayerRef.current) {
+      mapRef.current.removeLayer(tileLayerRef.current);
+    }
+    tileLayerRef.current = L.tileLayer(darkMode ? DARK_TILE_LAYER : LIGHT_TILE_LAYER, {
+      attribution: ATTRIBUTION,
+    }).addTo(mapRef.current);
+    mapRef.current.invalidateSize();
+  }, [darkMode]);
 
   const loadIncidents = async () => {
     const { data, error } = await await supabase.from('siniestros').select('*');
@@ -339,8 +353,15 @@ export default function App() {
   };
 
   return (
-    <div className="app-root" style={containerStyle}>
-      <header style={headerStyle}>
+    <div className={darkMode ? 'app-root dark-mode' : 'app-root'} style={containerStyle}>
+      <header
+        style={{
+          ...headerStyle,
+          background: darkMode ? '#111827' : '#ffffff',
+          color: darkMode ? '#f8fafc' : '#111827',
+          borderBottom: darkMode ? '1px solid rgba(148, 163, 184, 0.18)' : '1px solid rgba(15, 23, 42, 0.08)',
+        }}
+      >
         <div style={headerLeftStyle}>
           <div style={brandStyle}>
             <img src={logo} alt="SITUA" style={logoStyle} />
@@ -353,6 +374,18 @@ export default function App() {
           <span style={gpsTextStyle}>{gpsLabels[gpsStatus]}</span>
           <span style={dividerStyle} />
           <span style={usersStyle}>{onlineUsers} en línea</span>
+          <button
+            style={{
+              ...themeBtnStyle,
+              color: darkMode ? '#f8fafc' : '#0f172a',
+              background: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.9)',
+              borderColor: darkMode ? 'rgba(148, 163, 184, 0.28)' : 'rgba(148, 163, 184, 0.32)',
+            }}
+            onClick={() => setDarkMode((prev) => !prev)}
+            title={darkMode ? 'Modo claro' : 'Modo oscuro'}
+          >
+            {darkMode ? '☀️ Claro' : '🌙 Oscuro'}
+          </button>
         </div>
       </header>
 
@@ -564,6 +597,8 @@ const mapStyle = {
   flex: 1,
   width: '100%',
   minHeight: 'calc(100vh - 82px)',
+  position: 'relative',
+  zIndex: 1,
 };
 const centerBtnStyle = {
   position: 'fixed',
@@ -600,6 +635,16 @@ const fabStyle = {
   pointerEvents: 'auto',
 };
 const fabIconStyle = { fontSize: 24, color: '#fff', fontWeight: 700 };
+const themeBtnStyle = {
+  background: 'transparent',
+  border: '1px solid rgba(148, 163, 184, 0.32)',
+  color: '#0f172a',
+  borderRadius: 999,
+  padding: '10px 14px',
+  cursor: 'pointer',
+  fontSize: 13,
+  fontWeight: 700,
+};
 const fabTextStyle = { fontSize: 15, fontWeight: 700, color: '#fff' };
 const overlayStyle = {
   position: 'fixed',

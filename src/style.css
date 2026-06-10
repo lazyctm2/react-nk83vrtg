@@ -47,6 +47,67 @@ button:disabled {
   background: #eef2f7;
 }
 
+.dark-mode {
+  background: #020617;
+  color: #f8fafc;
+}
+
+.dark-mode .app-root {
+  background: #020617;
+  color: #f8fafc;
+}
+
+.dark-mode .incident-card {
+  background: #111827;
+  border-color: #374151;
+  color: #f8fafc;
+}
+
+.dark-mode .incident-card:hover {
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
+}
+
+.dark-mode .primary-button {
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.18);
+}
+
+.dark-mode .secondary-button {
+  background: #111827;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+.dark-mode .input-field {
+  background: #0f172a;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+.dark-mode .input-field:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+}
+
+.dark-mode .modal-backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .modal-sheet {
+  background: #0f172a;
+  color: #f8fafc;
+  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.dark-mode .success-toast {
+  background: #111827;
+  color: #f8fafc;
+}
+
+.dark-mode .status-chip {
+  background: rgba(15, 23, 42, 0.75);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
 .incident-card {
   width: 100%;
   padding: 18px;
@@ -125,7 +186,7 @@ button:disabled {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  z-index: 200;
+  z-index: 2200;
 }
 
 .modal-sheet {
