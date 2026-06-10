@@ -106,6 +106,91 @@ button:disabled {
 .dark-mode .status-chip {
   background: rgba(15, 23, 42, 0.75);
   border-color: rgba(148, 163, 184, 0.18);
+  color: #f8fafc;
+}
+
+.dark-mode .status-chip span,
+.dark-mode .status-chip strong,
+.dark-mode .status-chip p {
+  color: #f8fafc;
+}
+
+.dark-mode .modal-sheet,
+.dark-mode .success-toast,
+.dark-mode .status-chip,
+.dark-mode .secondary-button,
+.dark-mode .primary-button,
+.dark-mode .input-field,
+.dark-mode .incident-card {
+  color: #f8fafc;
+}
+
+.dark-mode .modal-sheet h2,
+.dark-mode .modal-sheet p,
+.dark-mode .modal-sheet label,
+.dark-mode .modal-sheet span {
+  color: #f8fafc;
+}
+
+.dark-mode .modal-sheet input::placeholder {
+  color: rgba(248, 250, 252, 0.6);
+}
+
+.dark-mode .modal-sheet input,
+.dark-mode .modal-sheet textarea {
+  color: #f8fafc;
+}
+
+.dark-mode .modal-sheet button {
+  color: #f8fafc;
+}
+
+.dark-mode .secondary-button {
+  background: #111827;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+.dark-mode .primary-button {
+  background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+  color: #ffffff;
+}
+
+.dark-mode .secondary-button {
+  background: #111827;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+.dark-mode .input-field {
+  background: #0f172a;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+.dark-mode .input-field:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+}
+
+.dark-mode .modal-backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .modal-sheet {
+  background: #0f172a;
+  color: #f8fafc;
+  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.dark-mode .success-toast {
+  background: #111827;
+  color: #f8fafc;
+}
+
+.dark-mode .status-chip {
+  background: rgba(15, 23, 42, 0.75);
+  border-color: rgba(148, 163, 184, 0.18);
 }
 
 .incident-card {
