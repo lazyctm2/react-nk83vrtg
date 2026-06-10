@@ -125,6 +125,15 @@ button:disabled {
   color: #f8fafc;
 }
 
+.dark-mode .modal-sheet,
+.dark-mode .modal-sheet * {
+  color: #f8fafc !important;
+}
+
+.dark-mode .modal-sheet input::placeholder {
+  color: rgba(248, 250, 252, 0.6) !important;
+}
+
 .dark-mode .modal-sheet h2,
 .dark-mode .modal-sheet p,
 .dark-mode .modal-sheet label,

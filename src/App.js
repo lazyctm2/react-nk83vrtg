@@ -352,8 +352,84 @@ export default function App() {
     error: '#ef4444',
   };
 
+  const dynamicHeaderSubtitleStyle = {
+    ...headerSubtitleStyle,
+    color: darkMode ? '#cbd5e1' : headerSubtitleStyle.color,
+  };
+  const dynamicStatusStyle = {
+    ...statusStyle,
+    background: darkMode ? 'rgba(255,255,255,0.08)' : statusStyle.background,
+    border: darkMode ? '1px solid rgba(148,163,184,0.18)' : statusStyle.border,
+    color: darkMode ? '#f8fafc' : statusStyle.color,
+  };
+  const dynamicGpsTextStyle = {
+    ...gpsTextStyle,
+    color: darkMode ? '#f8fafc' : gpsTextStyle.color,
+  };
+  const dynamicUsersStyle = {
+    ...usersStyle,
+    color: darkMode ? '#e2e8f0' : usersStyle.color,
+  };
+  const dynamicModalStyle = {
+    ...modalStyle,
+    background: darkMode ? '#0f172a' : modalStyle.background,
+    color: darkMode ? '#f8fafc' : modalStyle.color,
+  };
+  const dynamicCloseBtnStyle = {
+    ...closeBtnStyle,
+    background: darkMode ? '#111827' : closeBtnStyle.background,
+    color: darkMode ? '#e2e8f0' : closeBtnStyle.color,
+  };
+  const dynamicModalTitleStyle = {
+    ...modalTitleStyle,
+    color: darkMode ? '#f8fafc' : modalTitleStyle.color,
+  };
+  const dynamicModalSubtitleStyle = {
+    ...modalSubtitleStyle,
+    color: darkMode ? '#cbd5e1' : modalSubtitleStyle.color,
+  };
+  const dynamicCardStyle = {
+    ...cardStyle,
+    background: darkMode ? '#111827' : cardStyle.background,
+    borderColor: darkMode ? '#374151' : cardStyle.borderColor,
+    color: darkMode ? '#f8fafc' : '#111827',
+  };
+  const dynamicCardTitleStyle = {
+    ...cardTitleStyle,
+    color: darkMode ? '#f8fafc' : cardTitleStyle.color,
+  };
+  const dynamicDividerTextStyle = {
+    ...dividerTextStyle,
+    color: darkMode ? '#94a3b8' : dividerTextStyle.color,
+  };
+  const dynamicInputStyle = {
+    ...inputStyle,
+    background: darkMode ? '#0f172a' : '#ffffff',
+    color: darkMode ? '#f8fafc' : '#111827',
+    border: darkMode ? '1px solid #334155' : inputStyle.border,
+  };
+  const dynamicBackBtnStyle = {
+    ...backBtnStyle,
+    background: darkMode ? '#111827' : backBtnStyle.background,
+    color: darkMode ? '#e2e8f0' : backBtnStyle.color,
+    border: darkMode ? '1px solid #334155' : backBtnStyle.border,
+  };
+  const dynamicSuccessBoxStyle = {
+    ...successBoxStyle,
+    background: darkMode ? '#111827' : successBoxStyle.background,
+    color: darkMode ? '#f8fafc' : successBoxStyle.color,
+  };
+  const dynamicSuccessTextStyle = {
+    ...successTextStyle,
+    color: darkMode ? '#f8fafc' : successTextStyle.color,
+  };
+  const dynamicContainerStyle = {
+    ...containerStyle,
+    background: darkMode ? '#020617' : containerStyle.background,
+  };
+
   return (
-    <div className={darkMode ? 'app-root dark-mode' : 'app-root'} style={containerStyle}>
+    <div className={darkMode ? 'app-root dark-mode' : 'app-root'} style={dynamicContainerStyle}>
       <header
         style={{
           ...headerStyle,
@@ -367,13 +443,13 @@ export default function App() {
             <img src={logo} alt="SITUA" style={logoStyle} />
             <span style={titleStyle}>SITUA</span>
           </div>
-          <span style={headerSubtitleStyle}>Mapa de incidentes en tiempo real</span>
+          <span style={dynamicHeaderSubtitleStyle}>Mapa de incidentes en tiempo real</span>
         </div>
-        <div style={statusStyle}>
+        <div style={dynamicStatusStyle}>
           <span style={{ ...gpsDotStyle, background: gpsColors[gpsStatus] }} />
-          <span style={gpsTextStyle}>{gpsLabels[gpsStatus]}</span>
+          <span style={dynamicGpsTextStyle}>{gpsLabels[gpsStatus]}</span>
           <span style={dividerStyle} />
-          <span style={usersStyle}>{onlineUsers} en línea</span>
+          <span style={dynamicUsersStyle}>{onlineUsers} en línea</span>
           <button
             style={{
               ...themeBtnStyle,
@@ -425,9 +501,9 @@ export default function App() {
             setSeleccion(null);
           }}
         >
-          <div className="modal-sheet" style={modalStyle} onClick={(e) => e.stopPropagation()}>
+          <div className="modal-sheet" style={dynamicModalStyle} onClick={(e) => e.stopPropagation()}>
             <button
-              style={closeBtnStyle}
+              style={dynamicCloseBtnStyle}
               onClick={() => {
                 setModalOpen(false);
                 setSeleccion(null);
@@ -436,12 +512,12 @@ export default function App() {
               ×
             </button>
 
-            <h2 style={modalTitleStyle}>
+            <h2 style={dynamicModalTitleStyle}>
               {seleccion
                 ? `${seleccion.emoji} ${seleccion.subtipo}`
                 : '¿Qué está ocurriendo?'}
             </h2>
-            <p style={modalSubtitleStyle}>
+            <p style={dynamicModalSubtitleStyle}>
               {seleccion
                 ? 'Confirma la ubicación del incidente'
                 : 'Selecciona el tipo de incidente'}
@@ -454,7 +530,7 @@ export default function App() {
                     key={opt.id}
                     onClick={() => handleSelectOption(opt)}
                     className="incident-card"
-                    style={{ borderColor: opt.color }}
+                    style={{ ...dynamicCardStyle, borderColor: opt.color }}
                   >
                     <span
                       style={{
@@ -464,7 +540,7 @@ export default function App() {
                     >
                       {opt.emoji}
                     </span>
-                    <span style={cardTitleStyle}>{opt.subtipo}</span>
+                    <span style={dynamicCardTitleStyle}>{opt.subtipo}</span>
                     <span style={{ ...cardCatStyle, color: opt.color }}>
                       {opt.categoria}
                     </span>
@@ -480,7 +556,7 @@ export default function App() {
                 >
                   <span style={actionIconStyle}>📍</span> Usar mi ubicación
                 </button>
-                <div style={dividerTextStyle}>
+                <div style={dynamicDividerTextStyle}>
                   <span>o ingresa una dirección</span>
                 </div>
                 <input
@@ -488,6 +564,7 @@ export default function App() {
                   value={direccion}
                   onChange={(e) => setDireccion(e.target.value)}
                   className="input-field"
+                  style={dynamicInputStyle}
                   onKeyDown={(e) => e.key === 'Enter' && handleUseAddress()}
                 />
                 <button
@@ -500,6 +577,7 @@ export default function App() {
                 </button>
                 <button
                   className="secondary-button"
+                  style={dynamicBackBtnStyle}
                   onClick={() => setSeleccion(null)}
                   disabled={enviando}
                 >
@@ -513,9 +591,9 @@ export default function App() {
 
       {exito && (
         <div style={successOverlayStyle}>
-          <div style={successBoxStyle}>
+          <div style={dynamicSuccessBoxStyle}>
             <span style={successEmojiStyle}>✓</span>
-            <span style={successTextStyle}>Alerta enviada</span>
+            <span style={dynamicSuccessTextStyle}>Alerta enviada</span>
           </div>
         </div>
       )}
